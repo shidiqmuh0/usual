@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   const apiKey = process.env.DUNE_API_KEY;
-  const url = "https://api.dune.com/api/v1/query/3944406/results?limit=1";
+  const url = "https://api.dune.com/api/v1/query/3944406/results?limit=1000";
 
   try {
     const response = await fetch(url, {
@@ -18,6 +18,11 @@ export default async function handler(req, res) {
 
     const data = await response.json();
     const totalPills = data.result.rows[0].total_pills;
+
+    // Menambahkan header CORS
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Mengizinkan akses dari semua domain
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     res.status(200).json({ totalPills });
   } catch (error) {
